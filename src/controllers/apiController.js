@@ -29,10 +29,21 @@ async function retrieveFile(req, res) {
     }
 }
 
+async function deleteFile(req, res) {
+    var id = req.params['id'];
+    const response = await fileService.deleteFile(id);
+    if (response.status) {
+        res.status(response.status).send(response.data);
+    } else {
+        res.status(404).send(response);
+    }
+}
+
 module.exports = {
     test,
     transformData,
     uploadFile,
     listFiles,
-    retrieveFile
+    retrieveFile,
+    deleteFile
 }

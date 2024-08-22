@@ -7,6 +7,7 @@ router
     .post("/transform-data", apiController.transformData)
     .post("/upload-file", apiController.uploadFile)
     .get("/list-files", apiController.listFiles)
-    .get("/retrieve-file/:id", apiController.retrieveFile);
+    .get("/retrieve-file/:id", apiController.retrieveFile)
+    .delete("/delete-file/:id", apiController.deleteFile);
 
 module.exports = router;

@@ -28,9 +28,18 @@ async function listFiles() {
     return response;
 }
 
-async function retrieveFile(fileId) {
+async function retrieveFile(id) {
     try {
-        const response = await openai.retrieveFile(fileId);
+        const response = await openai.retrieveFile(id);
+        return response;
+    } catch (e) {
+        return "File id not found";
+    }
+}
+
+async function deleteFile(id) {
+    try {
+        const response = await openai.deleteFile(id);
         return response;
     } catch (e) {
         return "File id not found";
@@ -41,5 +50,6 @@ module.exports = {
     tranformData,
     uploadFile,
     listFiles,
-    retrieveFile
+    retrieveFile,
+    deleteFile
 }
