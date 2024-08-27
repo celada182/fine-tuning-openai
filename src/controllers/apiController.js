@@ -1,4 +1,5 @@
 const fileService = require("../services/file/fileService");
+const fineTuneService = require("../services/file/fineTuneService");
 
 async function test(req, res) {
     res.send("Test ok");
@@ -11,19 +12,23 @@ async function transformData(req, res) {
 
 async function uploadFile(req, res) {
     const response = await fileService.uploadFile();
-    res.status(response.status).send(response.data);
+    if (response) {
+        res.status(200).send(response);
+    } else {
+        res.status(500).send(response);
+    }
 }
 
 async function listFiles(req, res) {
     const response = await fileService.listFiles();
-    res.status(response.status).send(response.data);
+    res.status(response.response.status).send(response.data);
 }
 
 async function retrieveFile(req, res) {
     var id = req.params['id'];
     const response = await fileService.retrieveFile(id);
-    if (response.status) {
-        res.status(response.status).send(response.data);
+    if (response.response) {
+        res.status(response.response.status).send(response.data);
     } else {
         res.status(404).send(response);
     }
@@ -32,11 +37,18 @@ async function retrieveFile(req, res) {
 async function deleteFile(req, res) {
     var id = req.params['id'];
     const response = await fileService.deleteFile(id);
-    if (response.status) {
-        res.status(response.status).send(response.data);
+    if (response.response) {
+        res.status(response.response.status).send(response.data);
     } else {
         res.status(404).send(response);
     }
+}
+
+async function createFineTune(req, res) {
+    var id = req.params['id'];
+    const response = await fineTuneService.createFineTune(id);
+    console.log(response);
+    res.status(response.status).send(response.data);
 }
 
 module.exports = {
@@ -45,5 +57,6 @@ module.exports = {
     uploadFile,
     listFiles,
     retrieveFile,
-    deleteFile
+    deleteFile,
+    createFineTune
 }

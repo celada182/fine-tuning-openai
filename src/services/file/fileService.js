@@ -1,9 +1,7 @@
 var xlsx = require("xlsx");
 const fs = require("fs");
-const { Configuration, OpenAIApi } = require("openai");
-const API_KEY = process.env.API_KEY || "";
-const configuration = new Configuration({ apiKey: API_KEY });
-const openai = new OpenAIApi(configuration);
+const OpenAI = require("openai");
+const openai = new OpenAI();
 
 async function tranformData() {
     var workbook = xlsx.readFile("src/shared/data-set.xlsx");
@@ -19,18 +17,21 @@ async function tranformData() {
 }
 
 async function uploadFile() {
-    const response = await openai.createFile(fs.createReadStream("src/shared/data-set.jsonl"), "fine-tune");
+    const response = await openai.files.create({
+        file: fs.createReadStream("src/shared/data-set.jsonl"),
+        purpose: "fine-tune"
+    });
     return response;
 }
 
 async function listFiles() {
-    const response = await openai.listFiles();
+    const response = await openai.files.list();
     return response;
 }
 
 async function retrieveFile(id) {
     try {
-        const response = await openai.retrieveFile(id);
+        const response = await openai.files.retrieve(id);
         return response;
     } catch (e) {
         return "File id not found";
@@ -39,7 +40,7 @@ async function retrieveFile(id) {
 
 async function deleteFile(id) {
     try {
-        const response = await openai.deleteFile(id);
+        const response = await openai.files.del(id);
         return response;
     } catch (e) {
         return "File id not found";

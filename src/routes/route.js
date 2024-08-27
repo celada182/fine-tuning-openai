@@ -8,6 +8,7 @@ router
     .post("/upload-file", apiController.uploadFile)
     .get("/list-files", apiController.listFiles)
     .get("/retrieve-file/:id", apiController.retrieveFile)
-    .delete("/delete-file/:id", apiController.deleteFile);
+    .delete("/delete-file/:id", apiController.deleteFile)
+    .post("/create-fine-tune/:id", apiController.createFineTune);
 
 module.exports = router;
